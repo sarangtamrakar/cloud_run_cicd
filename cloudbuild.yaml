@@ -1,0 +1,19 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [ 'build', '-t', 'gcr.io/my-gcp-de-463417/cloud-run-demo', '.' ]
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [ 'push', 'gcr.io/my-gcp-de-463417/cloud-run-demo' ]
+
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      [
+        'run', 'deploy', 'cloud-run-demo',
+        '--image', 'gcr.io/my-gcp-de-463417/cloud-run-demo',
+        '--platform', 'managed',
+        '--region', 'us-central1',
+        '--allow-unauthenticated'
+      ]
+images:
+  - gcr.io/my-gcp-de-463417/cloud-run-demo
